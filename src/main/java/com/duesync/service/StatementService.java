@@ -53,7 +53,7 @@ public class StatementService {
                 String date = limit(row.date(), 100);
                 String narration = limit(row.narration(), 1000);
                 String fingerprint = fingerprint(date, row, narration);
-                if (transactions.existsByFingerprint(fingerprint)) {
+                if (transactions.findByFingerprint(fingerprint).isPresent()) {
                     skipped++;
                     continue;
                 }
