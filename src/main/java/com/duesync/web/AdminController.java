@@ -64,6 +64,9 @@ public class AdminController {
 
     @PutMapping("/settings/dues-amount")
     public Map<String, BigDecimal> setDuesAmount(@RequestBody DuesAmountRequest request) {
+        if (request == null) {
+            throw ApiException.badRequest("The request body is required.");
+        }
         return Map.of("amount", settings.setDuesAmount(request.amount()));
     }
 
@@ -97,12 +100,15 @@ public class AdminController {
 
     @PostMapping("/submissions/{id}/verify")
     public Submission verify(@PathVariable Long id, @RequestBody VerifyRequest request) {
+        if (request == null) {
+            throw ApiException.badRequest("The request body is required.");
+        }
         return submissions.verify(id, request.transactionId());
     }
 
     @PostMapping("/submissions/{id}/reject")
     public Submission reject(@PathVariable Long id, @RequestBody RejectRequest request) {
-        return submissions.reject(id, request.note());
+        return submissions.reject(id, request == null ? null : request.note());
     }
 
     @GetMapping("/transactions")
